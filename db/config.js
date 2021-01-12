@@ -1,0 +1,18 @@
+const { connect } = require('../router/register');
+
+require('dotenv').config()
+
+const mysql = require('mysql2')
+const bluebird = require('bluebird')
+const config = {
+    host: process.env.DB_HOST,
+    user:process.env.DB_USER,
+    password:process.env.DB_PASSWORD,
+    database:process.env.DB_NAME,
+    Promise:bluebird,
+}
+
+
+
+
+module.exports = config;
