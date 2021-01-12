@@ -4,8 +4,9 @@
   "description": "TAsys",
   "main": "index.js",
   "scripts": {
+    "run":"node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
