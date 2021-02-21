@@ -8,13 +8,14 @@ INNER JOIN major m on c.major_id = m.major_id
 where deleted !=1 ORDER BY course_id,major_id");
 $semester = $conn->query("SELECT * from semester");
 $day = $conn->query("SELECT * from DAY_WORK");
-
+$teacher = $conn->query("SELECT * from user_tbl where user_type = 2");
 // $courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id where c.deleted != 1 ");
 
 
 $SemesterOption = '';
 $coursesOption = '';
 $day_option = '';
+$teacher_option = '';
 while($row = mysqli_fetch_assoc($courses))
 {
     $coursesOption .= sprintf('<option value="%d">%s</option>',
@@ -36,6 +37,16 @@ while($row = mysqli_fetch_assoc($day))
   $row['id'],
   "{$row['day']}");
 }
+
+while($row=mysqli_fetch_assoc($teacher))
+{
+  $teacher_option  .= sprintf('<option value="%d">%s</option>',
+  $row['user_id'],
+  "{$row['f_name']} {$row['l_name']}"
+);
+}
+
+
 
 
 
@@ -83,13 +94,14 @@ while($row = mysqli_fetch_assoc($day))
     <div class="container body">
       <div class="main_container">
         
-        <?php require_once('teacher_header.php');?>
+        <?php require_once('admin_header.php');?>
         <?php 
   $queryMatchCourse = "SELECT * FROM matching_course m
   INNER JOIN semester s on m.sem_id = s.sem_id
   INNER JOIN course c on m.course_id = c.course_id
   INNER JOIN day_work d on m.t_date = d.id
-  WHERE user_id = '{$_SESSION['id']}' and m.deleted = 0
+  INNER JOIN user_tbl u on m.user_id = u.user_id
+  WHERE m.deleted = 0 and c.deleted = 0
   ORDER BY s.sem_number,m.m_ststus;
   ";
   
@@ -100,17 +112,17 @@ while($row = mysqli_fetch_assoc($day))
         <!-- page content -->
         <div class="right_col" role="main" style="min-height:100vh">
             <div class="panel p-4 mt-5">
-                <div><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Course</a></div>
+                <div><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Assign Course</a></div>
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add new courses</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Assign Course</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./request/add_logic.php" method="POST">
+      <form action="./assign/add_logic.php" method="POST">
       <div class="modal-body">
        
      <div class="form-floating mb-3">
@@ -123,6 +135,13 @@ while($row = mysqli_fetch_assoc($day))
        <label for="floatingInput">Course Name</label>
        <select class="form-control" name="course_id" placeholder="Select The Major">
             <?= $coursesOption ?>
+            </select>
+     </div>
+            <div class="form-floating mb-3">
+       <label for="floatingInput">Lecturer: </label>
+       <select class="form-control" name="teacher_id" placeholder="Select Teacher" >
+           
+            <?= $teacher_option ?>
             </select>
      </div>
 
@@ -161,7 +180,7 @@ while($row = mysqli_fetch_assoc($day))
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="add" class="btn btn-primary">Add Courses</button>
+        <button type="submit" name="add" class="btn btn-primary">Assign Course</button>
       </div>
       </form>
     </div>
@@ -216,7 +235,7 @@ while($row = mysqli_fetch_assoc($day))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./request/add_logic.php" method="POST">
+      <form action="./assign/add_logic.php" method="POST">
       <div class="modal-body">
        
      <div class="form-floating mb-3">
@@ -233,8 +252,16 @@ while($row = mysqli_fetch_assoc($day))
      </div>
 
      <div class="form-floating mb-3">
+       <label for="floatingInput">Lecturer: </label>
+       <select class="form-control" name="teacher_id" placeholder="Select Teacher" >
+           
+            <?= $teacher_option ?>
+            </select>
+     </div>
+
+     <div class="form-floating mb-3">
       <label for="floatingInput">section</label>
-        <input type="text" class="form-control" id="floatingInput" name="section" placeholder="Course ID">
+        <input type="text" class="form-control" id="floatingInput" value="<?= $data['section']?>" name="section" placeholder="Course ID">
     </div>
 
     <div class="form-floating mb-3">
@@ -246,7 +273,7 @@ while($row = mysqli_fetch_assoc($day))
 
      <div class="form-floating mb-3">
       <label for="floatingInput">Work Time</label>
-        <input type="text" class="form-control" id="floatingInput" name="WORK_TIME" placeholder="Work Time">
+        <input type="text" class="form-control" id="floatingInput" value="<?=$data['t_time']?>" name="WORK_TIME" placeholder="Work Time">
     </div>
 
     <div class="form-floating mb-3">
@@ -259,7 +286,7 @@ while($row = mysqli_fetch_assoc($day))
 
     <div class="form-floating mb-3">
       <label for="floatingInput">Hour Per Week</label>
-        <input type="text" class="form-control" id="floatingInput" name="HOUR" placeholder="HOUR PER WEEK">
+        <input type="text" class="form-control" id="floatingInput" name="HOUR" value="<?=$data['hr_per_week'] ?>" placeholder="HOUR PER WEEK">
     </div>
 
 
@@ -277,7 +304,7 @@ while($row = mysqli_fetch_assoc($day))
 
 <!-- Delete -->
 
-<div class="modal fade"  id="delete<?=$data['course_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade"  id="delete<?=$data['m_course_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -286,10 +313,11 @@ while($row = mysqli_fetch_assoc($day))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./course/delete_logic.php?old=<?=$data['course_id']?>" method="POST">
+      <form action="./course/delete_logic.php?old=<?=$data['m_course_id']?>" method="POST">
       <div class="modal-body">
             
-            <h2>Are you sure deleteing <?=$data['course_id'] ?> <?=$data['course_name']?></h2>
+            <h2>Are you sure deleteing <?=$data['course_id'] ?> <?=$data['course_name']?> <?=$data['section']?></h2>
+            <h2>By Teacher <?=$data['f_name'],$data['l_name']?>?</h2>
       
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

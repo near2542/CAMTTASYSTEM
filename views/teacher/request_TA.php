@@ -6,6 +6,16 @@ $courses = $conn->query("SELECT course_id,course_name,m.major_id,major_name
 from course c
 INNER JOIN major m on c.major_id = m.major_id
 where deleted !=1 ORDER BY course_id,major_id");
+
+// $AssignedCourse = $conn->query("SELECT * FROM matching_course m
+// INNER JOIN semester s on m.sem_id = s.sem_id
+// INNER JOIN course c on m.course_id = c.course_id
+// INNER JOIN day_work d on m.t_date = d.id
+// LEFT JOIN ta_request t ON t.m_course_id = m.m_course_id
+// WHERE user_id = {$_SESSION['id']} and m.deleted = 0
+// ORDER BY s.sem_number,m.m_ststus");
+
+
 $semester = $conn->query("SELECT * from semester");
 $day = $conn->query("SELECT * from DAY_WORK");
 
@@ -85,22 +95,29 @@ while($row = mysqli_fetch_assoc($day))
         
         <?php require_once('teacher_header.php');?>
         <?php 
-  $queryMatchCourse = "SELECT * FROM matching_course m
-  INNER JOIN semester s on m.sem_id = s.sem_id
-  INNER JOIN course c on m.course_id = c.course_id
-  INNER JOIN day_work d on m.t_date = d.id
-  WHERE user_id = '{$_SESSION['id']}' and m.deleted = 0
-  ORDER BY s.sem_number,m.m_ststus;
-  ";
-  
-  $MatchCourse = $conn->query($queryMatchCourse);
+  // $queryMatchCourse = "SELECT * FROM matching_course m
+  // INNER JOIN semester s on m.sem_id = s.sem_id
+  // INNER JOIN course c on m.course_id = c.course_id
+  // INNER JOIN day_work d on m.t_date = d.id
+  // LEFT JOIN ta_request t ON t.m_course_id = m.m_course_id
+  // WHERE user_id = '{$_SESSION['id']}' and m.deleted = 0
+  // ORDER BY s.sem_number,m.m_ststus;
+  // ";
+  $QueryAssignedCourse = "SELECT * FROM matching_course m
+INNER JOIN semester s on m.sem_id = s.sem_id
+INNER JOIN course c on m.course_id = c.course_id
+INNER JOIN day_work d on m.t_date = d.id
+LEFT JOIN ta_request t ON t.m_course_id = m.m_course_id
+WHERE user_id = 2 and m.deleted = 0 
+ORDER BY s.sem_number,m.m_ststus;";
+  $MatchCourse = $conn->query($QueryAssignedCourse);
   
   ?>
        
         <!-- page content -->
         <div class="right_col" role="main" style="min-height:100vh">
             <div class="panel p-4 mt-5">
-                <div><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Course</a></div>
+                <!-- <div><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Course</a></div> -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -201,10 +218,21 @@ while($row = mysqli_fetch_assoc($day))
             <td><?=$data['t_time']?></td>
             <td><?=$data['language']?></td>
             <td><?=$data['hr_per_week']?></td>
+            <!-- <td><?=$data['hr_per_week']?></td> -->
+            <!-- <td><?=$data['hr_per_week']?></td> -->
             <td>
-            <button class="btn btn-success" data-target="#edit<?=$data['m_course_id']?>" data-toggle="modal">Edit</button> 
-            <button class="btn btn-danger" data-target="#delete<?=$data['m_course_id']?>" data-toggle="modal">Delete</button>
+            <?php if($data['approved'] != 0) {?>
+              <button class="btn btn-success" data-target="#edit<?=$data['m_course_id']?>" data-toggle="modal" disabled>
+            Approved
+            </button> 
+            <?php } ?>
+            <?php if ($data['approved'] == 0) {?>
+            <button class="btn btn-success" data-target="#edit<?=$data['m_course_id']?>" data-toggle="modal" <?=$data['request_id']? "disabled" : null?>>
+            <?=$data['request_id']? "Requested": "Request"?>
+            </button> 
+            <button class="btn btn-danger" data-target="#delete<?=$data['m_course_id']?>" data-toggle="modal" >Delete</button>
             </td>
+            <?php } ?>
 
             <!--  Edit -->
             <div class="modal fade" id="edit<?=$data['m_course_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -216,58 +244,67 @@ while($row = mysqli_fetch_assoc($day))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./request/add_logic.php" method="POST">
+      <form action="./request_TA/add.php?id=<?=$data['m_course_id']?>" method="POST">
       <div class="modal-body">
        
      <div class="form-floating mb-3">
      <label for="floatingInput">Semester: </label>
-     <select class="form-control" name="sem_id" placeholder="Select The Major">
+     <select class="form-control" name="sem_id" placeholder="Select The Major" disabled>
      <?= $SemesterOption ?>
             </select>
             </div>
             <div class="form-floating mb-3">
        <label for="floatingInput">Course Name</label>
-       <select class="form-control" name="course_id" placeholder="Select The Major">
-            <?= $coursesOption ?>
+       <select class="form-control" name="course_id" placeholder="Select The Major" disabled>
+            <option><?=$data['course_id']?></option>
             </select>
      </div>
 
      <div class="form-floating mb-3">
       <label for="floatingInput">section</label>
-        <input type="text" class="form-control" id="floatingInput" name="section" placeholder="Course ID">
+        <input type="text" class="form-control" id="floatingInput" name="section" placeholder="Section" value="<?=$data['section']?>" disabled>
     </div>
 
     <div class="form-floating mb-3">
        <label for="floatingInput">Date:</label>
-       <select class="form-control" name="day_id" placeholder="Select The Major">
+       <select class="form-control" name="day_id" placeholder="Select The Major" disabled>
             <?= $day_option ?>
             </select>
      </div>
 
      <div class="form-floating mb-3">
-      <label for="floatingInput">Work Time</label>
-        <input type="text" class="form-control" id="floatingInput" name="WORK_TIME" placeholder="Work Time">
+      <label for="floatingInput">Work Time(HOURS)</label>
+        <input type="text" class="form-control" id="floatingInput" name="WORK_TIME" value="<?=$data['t_time']?>" disabled placeholder="Work Time">
     </div>
 
     <div class="form-floating mb-3">
       <label for="floatingInput">Language</label>
-      <select class="form-control" name="language" placeholder="Select Language">
-            <option>TH</option>
-            <option>ENG</option>
+      <select class="form-control" name="language" placeholder="Select Language" disabled>
+            <option><?=$data['language']?></option>
             </select>
     </div>
 
     <div class="form-floating mb-3">
-      <label for="floatingInput">Hour Per Week</label>
-        <input type="text" class="form-control" id="floatingInput" name="HOUR" placeholder="HOUR PER WEEK">
+      <label for="floatingInput">Wanted Student Number</label>
+        <input type="text" class="form-control" id="floatingInput" name="Student" placeholder="Student Number">
     </div>
+
+    <div class="form-floating mb-3">
+      <label for="floatingInput">Wanted External Number</label>
+        <input type="text" class="form-control" id="floatingInput" name="Ex" placeholder="External Number">
+    </div>
+
+    <div class="form-group">
+  <label for="comment">Request Note:</label>
+  <textarea class="form-control" rows="5" id="comment" name="Request"></textarea>
+</div>
 
 
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="add" class="btn btn-primary">Add Courses</button>
+        <button type="submit" name="add" class="btn btn-primary">Request</button>
       </div>
       </form>
     </div>

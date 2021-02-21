@@ -83,7 +83,7 @@ while($row = mysqli_fetch_assoc($day))
     <div class="container body">
       <div class="main_container">
         
-        <?php require_once('teacher_header.php');?>
+        <?php require_once('admin_header.php');?>
         <?php 
   $queryMatchCourse = "SELECT * FROM matching_course m
   INNER JOIN semester s on m.sem_id = s.sem_id

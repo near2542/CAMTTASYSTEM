@@ -29,7 +29,7 @@ echo $query;
 
 
 $existCourses = $conn->query($query);
-var_dump($existCourses->num_rows);
+// var_dump($existCourses->num_rows);
 if($existCourses->num_rows > 0) { 
     $conn->close();
     $_SESSION['error'] = "Course Already Exits!";

@@ -11,6 +11,7 @@ if(isset($_SESSION['error']))
   echo "<script>alert('$error')</script>";
 }
 
+require_once('../../db/connect.php');
 
 ?>
 <body>
@@ -271,6 +272,7 @@ if(isset($_SESSION['error']))
 
   <!-- Custom Theme Scripts -->
   <script src="../../public/build/js/custom.min.js"></script>
+  
 
 </body>
 

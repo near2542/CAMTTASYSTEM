@@ -11,8 +11,6 @@ if($_SESSION['role']!=1)
     exit(0);
 }
 
-
-
 if(isset($_POST['delete']))
 {
 $old = $_GET['old'];

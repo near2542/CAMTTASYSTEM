@@ -4,6 +4,7 @@ if($_SESSION['role'] !== "2" || !isset($_SESSION['role'])) {
     echo "<script>No permission</script>";
     header('location: ../index.php');
 }
+
 if(isset($_SESSION['error']))
 {
   $error = $_SESSION['error'];
@@ -48,7 +49,7 @@ if(isset($_SESSION['error']))
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href=".">Request For Courses</a></li>
+                      <li><a href="./request_courses.php">Request For Courses</a></li>
                       <li><a href="#">Dashboard2</a></li>
                       <li><a href="#">Dashboard3</a></li>
                     </ul>
