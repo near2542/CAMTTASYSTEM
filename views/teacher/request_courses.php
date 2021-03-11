@@ -90,7 +90,7 @@ while($row = mysqli_fetch_assoc($day))
   INNER JOIN course c on m.course_id = c.course_id
   INNER JOIN day_work d on m.t_date = d.id
   WHERE user_id = '{$_SESSION['id']}' and m.deleted = 0
-  ORDER BY s.sem_number,m.m_ststus;
+  ORDER BY s.sem_number,m.m_status;
   ";
   
   $MatchCourse = $conn->query($queryMatchCourse);
@@ -191,7 +191,7 @@ while($row = mysqli_fetch_assoc($day))
         <!---------------- ---------------------------->
         
           <tr>
-            <td><?=$data['m_ststus'] == 1 ? "open":"close"?></td>
+            <td><?=$data['m_status'] == 1 ? "open":"close"?></td>
             <td><?=$data['sem_number']?></td>
             <td><?=$data['year']?></td>
             <td><?=$data['course_id']?></td>

@@ -102,7 +102,7 @@ while($row=mysqli_fetch_assoc($teacher))
   INNER JOIN day_work d on m.t_date = d.id
   INNER JOIN user_tbl u on m.user_id = u.user_id
   WHERE m.deleted = 0 and c.deleted = 0
-  ORDER BY s.sem_number,m.m_ststus;
+  ORDER BY s.sem_number,m.m_status;
   ";
   
   $MatchCourse = $conn->query($queryMatchCourse);
@@ -210,7 +210,7 @@ while($row=mysqli_fetch_assoc($teacher))
         <!---------------- ---------------------------->
         
           <tr>
-            <td><?=$data['m_ststus'] == 1 ? "open":"close"?></td>
+            <td><?=$data['m_status'] == 1 ? "open":"close"?></td>
             <td><?=$data['sem_number']?></td>
             <td><?=$data['year']?></td>
             <td><?=$data['course_id']?></td>
@@ -235,7 +235,7 @@ while($row=mysqli_fetch_assoc($teacher))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./assign/add_logic.php" method="POST">
+      <form action="./assign/update_logic.php?id=<?=$data['m_course_id']?>" method="POST">
       <div class="modal-body">
        
      <div class="form-floating mb-3">
@@ -294,7 +294,7 @@ while($row=mysqli_fetch_assoc($teacher))
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="add" class="btn btn-primary">Add Courses</button>
+        <button type="submit" name="add" class="btn btn-primary">Edit Courses</button>
       </div>
       </form>
     </div>

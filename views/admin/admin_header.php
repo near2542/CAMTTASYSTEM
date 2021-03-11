@@ -49,7 +49,8 @@ require_once('../../db/connect.php');
                 <ul class="nav child_menu">
                   <li><a href="./course.php">Course</a></li>
                   <li><a href="./available_courses.php">Add </a></li>
-                  <li><a href="#">Dashboard3</a></li>
+                  <li><a href="./assign_courses.php">Assign Courses</a></li>
+                  <li><a href="./approve_ta.php">Approve TA</a></li>
                 </ul>
               </li>
             </ul>
