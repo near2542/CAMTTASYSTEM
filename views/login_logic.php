@@ -10,14 +10,14 @@
     $row = $conn->query($query);
     $result = $row->fetch_assoc();
     $conn->close();
-         if(!is_null($result))
+         if(!is_null($result)) 
         {
         session_start();
         $_SESSION['user'] = $result['username'];
         $_SESSION['role'] = $result['role'];
         $_SESSION['id'] = $result['user_id'];
         header('location: index.php');
-         }
+         } 
         else header('location: login.php?error=no');
     }
 

@@ -1,4 +1,14 @@
-<?php 
+<!-- SELECT *
+FROM matching_course m
+LEFT JOIN ta_request t ON t.m_course_id = m.m_course_id
+INNER JOIN semester s on m.sem_id = s.sem_id
+INNER JOIN course c on m.course_id = c.course_id
+INNER JOIN day_work d on m.t_date = d.id
+WHERE user_id = 2 and m.deleted AND t.approved IS NOT null
+ORDER BY s.sem_number,m.m_status;
+ -->
+
+ <?php 
 
 require_once('../../db/connect.php');
 $conn->init();
@@ -15,6 +25,14 @@ where deleted !=1 ORDER BY course_id,major_id");
 // WHERE user_id = {$_SESSION['id']} and m.deleted = 0
 // ORDER BY s.sem_number,m.m_status");
 
+
+$ta_request = "SELECT *
+FROM ta_request t INNER JOIN matching_course m ON t.m_course_id = m.m_course_id
+INNER JOIN course c ON c.course_id = m.course_id
+INNER JOIN user_tbl u ON u.user_id = m.user_id
+INNER JOIN semester s ON m.sem_id = s.sem_id
+INNER JOIN day_work d ON m.t_date = d.id
+";
 
 $semester = $conn->query("SELECT * from semester");
 $day = $conn->query("SELECT * from DAY_WORK");
@@ -46,10 +64,6 @@ while($row = mysqli_fetch_assoc($day))
   $row['id'],
   "{$row['day']}");
 }
-
-
-
-
 
 ?>
 <!DOCTYPE html>
@@ -93,7 +107,7 @@ while($row = mysqli_fetch_assoc($day))
     <div class="container body">
       <div class="main_container">
         
-        <?php require_once('teacher_header.php');?>
+        <?php require_once('admin_header.php');?>
         <?php 
   // $queryMatchCourse = "SELECT * FROM matching_course m
   // INNER JOIN semester s on m.sem_id = s.sem_id
@@ -112,7 +126,9 @@ INNER JOIN course c on m.course_id = c.course_id
 INNER JOIN day_work d on m.t_date = d.id
 WHERE user_id = '{$_SESSION['id']}' and m.deleted = 0 
 ORDER BY s.sem_number,m.m_status;";
-  $MatchCourse = $conn->query($QueryAssignedCourse);
+
+
+  $MatchCourse = $conn->query($ta_request);
   
   ?>
        
@@ -217,7 +233,7 @@ ORDER BY s.sem_number,m.m_status;";
             <td><?=$data['course_id']?></td>
             <td><?=$data['course_name']?></td>
             <td><?=$data['section']?></td>
-            <td><?=$data['day']?></td>
+            <td><?=$data['t_date']?></td>
             <td><?=$data['t_time']?></td>
             <td><?=$data['language']?></td>
             <td><?=$data['hr_per_week']?></td>
@@ -231,16 +247,15 @@ ORDER BY s.sem_number,m.m_status;";
             </button> 
             <?php } ?>
             <?php if ($data['approved'] == 0) {?>
-            <button class="btn btn-success" data-target="#edit<?=$data['m_course_id']?>" data-toggle="modal" <?=$data['request_id']? "disabled" : null?>>
-            <?=$data['request_id']? "Requested": "Request"?>
+            <button class="btn btn-success" data-target="#edit<?=$data['m_course_id']?>" data-toggle="modal" >
+            Approve
             </button> 
             <button class="btn btn-danger" data-target="#delete<?=$data['m_course_id']?>" data-toggle="modal" >Delete</button>
             </td>
             <?php } ?>
 
             <!--  Edit -->
-              <?php 
-?>
+           
             <div class="modal fade" id="edit<?=$data['m_course_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -250,13 +265,13 @@ ORDER BY s.sem_number,m.m_status;";
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./request_TA/add.php?id=<?=$data['m_course_id']?>" method="POST">
+      <form action="./approve_request/add.php?id=<?=$data['m_course_id']?>" method="POST">
       <div class="modal-body">
        
      <div class="form-floating mb-3">
      <label for="floatingInput">Semester: </label>
      <select class="form-control" name="sem_id" placeholder="Select The Major" disabled>
-     <?= $SemesterOption ?>
+     <option><?= $data['sem_number']?></option>
             </select>
             </div>
             <div class="form-floating mb-3">
@@ -274,7 +289,7 @@ ORDER BY s.sem_number,m.m_status;";
     <div class="form-floating mb-3">
        <label for="floatingInput">Date:</label>
        <select class="form-control" name="day_id" placeholder="Select The Major" disabled>
-            <?= $day_option ?>
+          <option>  <?= $data['day']?> </option>
             </select>
      </div>
 
@@ -292,17 +307,17 @@ ORDER BY s.sem_number,m.m_status;";
 
     <div class="form-floating mb-3">
       <label for="floatingInput">Wanted Student Number</label>
-        <input type="text" class="form-control" id="floatingInput" name="Student" placeholder="Student Number">
+        <input type="text" class="form-control" id="floatingInput" name="Student" placeholder="Student Number" value="<?= $data['stu_num']?>" disabled>
     </div>
 
     <div class="form-floating mb-3">
       <label for="floatingInput">Wanted External Number</label>
-        <input type="text" class="form-control" id="floatingInput" name="Ex" placeholder="External Number">
+        <input type="text" class="form-control" id="floatingInput" name="Ex" placeholder="External Number" <?=$data['ex_num']?> disabled>
     </div>
 
     <div class="form-group">
   <label for="comment">Request Note:</label>
-  <textarea class="form-control" rows="5" id="comment" name="Request"></textarea>
+  <textarea class="form-control" rows="5" id="comment" name="Request"  disabled><?= $data['request_note']?></textarea>
 </div>
 
 

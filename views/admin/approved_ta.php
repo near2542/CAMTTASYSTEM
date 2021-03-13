@@ -66,67 +66,30 @@ while($row = mysqli_fetch_assoc($major))
 	INNER JOIN ta_request t ON t.m_course_id = m.m_course_id
 	INNER JOIN user_tbl user  ON user.user_id = m.user_id
   INNER JOIN major  ON major.major_id = c.major_id 
-	WHERE approved = 1 AND m_status != 0  and r_status = 1";
+	WHERE approved = 1 AND m_status != 0  and r_status = 2";
 
     $talist = $conn->query($talistQuery);
   ?>
        
         <!-- page content -->
         <div class="right_col" role="main" style="min-height:100vh">
-            <div class="panel p-4 mt-5">
-                <div><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Course</a></div>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add new courses</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="./course/add_logic.php" method="POST">
-      <div class="modal-body">
-       
-      <div class="form-floating mb-3">
-      <label for="floatingInput">Course ID</label>
-        <input type="text" class="form-control" id="floatingInput" name="course_id" placeholder="Course ID">
-    </div>
-     <div class="form-floating mb-3">
-       <label for="floatingInput">Course Name</label>
-         <input type="text" name="course_name" class="form-control"  id="floatingInput" placeholder="Course Name">
-     </div> 
-     
-     <label for="floatingInput">Major: </label>
-     <select class="form-control" name="major_id" placeholder="Select The Major">
-     <?= $option ?>
-            </select>
-           
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="add" class="btn btn-primary">Add Courses</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
+          
 
         <div class="content mt-5">
-        <h1>Approve TA</h1>
-
+        <h1>The TA that has been approved</h1>
+        
         <table class="table table-striped">
           <tr>
             <th>Course ID</th>
             <th>Course Name</th>
             <th>Major Name</th>
-            <th>TA Name</th>
-            <th>Type</th>
+            <th>Student Name</th>
             <th>Teacher Name</th>
             <th>Day</th>
             <th>Time</th>
             <th>Year</th>
             <th>semester</th>
-            <th>Action</th>
+            <th>Timestamp</th>
           </tr>
           
           <?php while($data=mysqli_fetch_array($talist))
@@ -139,16 +102,15 @@ while($row = mysqli_fetch_assoc($major))
             <td><?=$data['course_name']?></td>
             <td><?=$data['major_name']?></td>
             <td><?=$data[8]?> <?=$data[9]?></td>
-            <td><?=$data[17]== 3? 'internal': 'external' ?></td>
             <td><?=$data['f_name']?> <?=$data['l_name']?></td>
             <td><?=$data['day']?> </td>
             <td><?=$data['t_time']?> </td>
             <td><?=$data['year']?> </td>
             <td><?=$data['sem_number']?> </td>
-            <td>
-            <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Approve</button> 
             
-            </td>
+            <td><?=$data[3]?></td>
+            
+           
 
             <!--  Edit -->
             <div class="modal fade" id="edit<?=$data['course_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -160,7 +122,7 @@ while($row = mysqli_fetch_assoc($major))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./approve_ta/approve.php?id=<?=$data['register_id']?>&type=<?=$data['user_type']?>" method="POST">
+      <form action="./approve_ta/approve.php?id=<?=$data['course_id']?>" method="POST">
       <div class="modal-body">
        
       <div class="form-floating mb-3">
