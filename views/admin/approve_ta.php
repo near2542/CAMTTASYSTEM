@@ -119,7 +119,8 @@ while($row = mysqli_fetch_assoc($major))
             <th>Course ID</th>
             <th>Course Name</th>
             <th>Major Name</th>
-            <th>Student Name</th>
+            <th>TA Name</th>
+            <th>Type</th>
             <th>Teacher Name</th>
             <th>Day</th>
             <th>Time</th>
@@ -138,6 +139,7 @@ while($row = mysqli_fetch_assoc($major))
             <td><?=$data['course_name']?></td>
             <td><?=$data['major_name']?></td>
             <td><?=$data[8]?> <?=$data[9]?></td>
+            <td><?=$data[17]== 3? 'internal': 'external' ?></td>
             <td><?=$data['f_name']?> <?=$data['l_name']?></td>
             <td><?=$data['day']?> </td>
             <td><?=$data['t_time']?> </td>
@@ -158,7 +160,7 @@ while($row = mysqli_fetch_assoc($major))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./approve_ta/approve.php?id=<?=$data['register_id']?>" method="POST">
+      <form action="./approve_ta/approve.php?id=<?=$data['register_id']?>&type=<?=$data['user_type']?>" method="POST">
       <div class="modal-body">
        
       <div class="form-floating mb-3">

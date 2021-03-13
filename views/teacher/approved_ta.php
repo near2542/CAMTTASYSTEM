@@ -56,7 +56,7 @@ while($row = mysqli_fetch_assoc($major))
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
-        <?php require_once('admin_header.php');?>
+        <?php require_once('teacher_header.php');?>
         <?php $talistQuery = "SELECT *,r.user_id AS TA,m.user_id AS Teacher
 	FROM register r INNER JOIN user_tbl u ON r.user_id = u.user_id
 	INNER JOIN matching_course m on m.m_course_id = r.m_course_id
@@ -66,7 +66,7 @@ while($row = mysqli_fetch_assoc($major))
 	INNER JOIN ta_request t ON t.m_course_id = m.m_course_id
 	INNER JOIN user_tbl user  ON user.user_id = m.user_id
   INNER JOIN major  ON major.major_id = c.major_id 
-	WHERE approved = 1 AND m_status != 0  and r_status = 2";
+	WHERE approved = 1  and r_status = 2 AND m.user_id = '{$_SESSION['id']}'";
 
     $talist = $conn->query($talistQuery);
   ?>
