@@ -8,6 +8,8 @@ $redirect = 'location: ../request_TA.php';
 
 $conn->init();
 
+
+
 if( $_SESSION['role']!=2)
 {
     $_SESSION['error'] = 'failed';
@@ -25,11 +27,15 @@ $note = $_POST['Request'];
 if(!is_numeric((int)$student)) $student = 0;
 if(!is_numeric((int)($external))) $student = 0;
 }
+
 else {
     $_SESSION['error'] = 'failed';
     header($redirect);
     exit(0);
 }
+
+var_dump($_POST);
+var_dump($id);
 
 $query = sprintf("INSERT INTO ta_request values ('','%d','%d','%d','%s',NULL,'%d','')",
         $conn->real_escape_string($id),

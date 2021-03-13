@@ -4,6 +4,15 @@ require_once('../../db/connect.php');
 $conn->init();
 $major = $conn->query("SELECT * from MAJOR");
 $courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id where c.deleted != 1 ");
+$openJob = $conn->query("SELECT *
+FROM ta_request t INNER JOIN matching_course m ON t.m_course_id = m.m_course_id
+INNER JOIN course c ON c.course_id = m.course_id
+INNER JOIN user_tbl u ON u.user_id = m.user_id
+INNER JOIN major ma ON ma.major_id = c.major_id
+INNER JOIN semester s ON m.sem_id = s.sem_id
+INNER JOIN day_work d ON m.t_date = d.id
+LEFT JOIN register r ON r.m_course_id = m.m_course_id
+WHERE approved = 1 AND m_status != 0");
 
 
 
@@ -56,19 +65,10 @@ while($row = mysqli_fetch_assoc($major))
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
-        <?php require_once('admin_header.php');?>
-        <?php $talistQuery = "SELECT *,r.user_id AS TA,m.user_id AS Teacher
-	FROM register r INNER JOIN user_tbl u ON r.user_id = u.user_id
-	INNER JOIN matching_course m on m.m_course_id = r.m_course_id
-	INNER JOIN course c on c.course_id = m.course_id
-	INNER JOIN semester s on m.sem_id = s.sem_id
-	INNER JOIN day_work d on d.id = m.t_date
-	INNER JOIN ta_request t ON t.m_course_id = m.m_course_id
-	INNER JOIN user_tbl user  ON user.user_id = m.user_id
-  INNER JOIN major  ON major.major_id = c.major_id 
-	WHERE approved = 1 AND m_status != 0  and r_status = 1";
-
-    $talist = $conn->query($talistQuery);
+        
+        <?php require_once('TAheader.php');?>
+        <?php 
+  
   ?>
        
         <!-- page content -->
@@ -94,8 +94,9 @@ while($row = mysqli_fetch_assoc($major))
      <div class="form-floating mb-3">
        <label for="floatingInput">Course Name</label>
          <input type="text" name="course_name" class="form-control"  id="floatingInput" placeholder="Course Name">
+
+
      </div> 
-     
      <label for="floatingInput">Major: </label>
      <select class="form-control" name="major_id" placeholder="Select The Major">
      <?= $option ?>
@@ -112,23 +113,18 @@ while($row = mysqli_fetch_assoc($major))
 </div>
 
         <div class="content mt-5">
-        <h1>Approve TA</h1>
-
         <table class="table table-striped">
           <tr>
             <th>Course ID</th>
             <th>Course Name</th>
             <th>Major Name</th>
-            <th>Student Name</th>
-            <th>Teacher Name</th>
-            <th>Day</th>
-            <th>Time</th>
             <th>Year</th>
-            <th>semester</th>
+            <th>Semester</th>
+            <th>Teacher Name</th>
+            <th>Language</th>
             <th>Action</th>
-          </tr>
-          
-          <?php while($data=mysqli_fetch_array($talist))
+        </tr>
+        <?php while($data=mysqli_fetch_assoc($openJob))
           {
         ?>
 
@@ -136,16 +132,17 @@ while($row = mysqli_fetch_assoc($major))
           <tr>
             <td><?=$data['course_id']?></td>
             <td><?=$data['course_name']?></td>
-            <td><?=$data['major_name']?></td>
-            <td><?=$data[8]?> <?=$data[9]?></td>
-            <td><?=$data['f_name']?> <?=$data['l_name']?></td>
-            <td><?=$data['day']?> </td>
-            <td><?=$data['t_time']?> </td>
+            <td><?=$data['major_name']?> </td>
             <td><?=$data['year']?> </td>
             <td><?=$data['sem_number']?> </td>
+            <td> <?= $data['f_name']?>  <?= $data['l_name']?></td>
+            <td><?=$data['language']?> </td>
             <td>
-            <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Approve</button> 
-            
+            <?php if($data['user_id'] === null):?>
+            <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Sign</button>
+            <?php else: ?> 
+            <button class="btn btn-danger" data-target="#delete<?=$data['course_id']?>" data-toggle="modal">Unsigned</button>
+            <?php endif; ?>
             </td>
 
             <!--  Edit -->
@@ -158,7 +155,7 @@ while($row = mysqli_fetch_assoc($major))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./approve_ta/approve.php?id=<?=$data['register_id']?>" method="POST">
+      <form action="./course/update_logic.php?old=<?=$data['course_id']?>" method="POST">
       <div class="modal-body">
        
       <div class="form-floating mb-3">
@@ -233,4 +230,4 @@ while($row = mysqli_fetch_assoc($major))
    
 
   </body>
-</html> 
+</html>
