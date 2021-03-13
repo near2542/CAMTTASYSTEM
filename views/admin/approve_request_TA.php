@@ -75,7 +75,7 @@ while($row = mysqli_fetch_assoc($day))
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Course</title>
+    <title>approve TA request</title>
 
     <link rel="icon" href="../public/images/favicon.ico" type="image/ico" />
   <link href="../../public/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -134,75 +134,6 @@ ORDER BY s.sem_number,m.m_status;";
        
         <!-- page content -->
         <div class="right_col" role="main" style="min-height:100vh">
-            <div class="panel p-4 mt-5">
-                <!-- <div><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Course</a></div> -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add new courses</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="./request/add_logic.php" method="POST">
-      <div class="modal-body">
-       
-     <div class="form-floating mb-3">
-     <label for="floatingInput">Semester: </label>
-     <select class="form-control" name="sem_id" placeholder="Select The Major">
-     <?= $SemesterOption ?>
-            </select>
-            </div>
-            <div class="form-floating mb-3">
-       <label for="floatingInput">Course Name</label>
-       <select class="form-control" name="course_id" placeholder="Select The Major">
-            <?= $coursesOption ?>
-            </select>
-     </div>
-
-     <div class="form-floating mb-3">
-      <label for="floatingInput">section</label>
-        <input type="text" class="form-control" id="floatingInput" name="section" placeholder="Course ID">
-    </div>
-
-    <div class="form-floating mb-3">
-       <label for="floatingInput">Date:</label>
-       <select class="form-control" name="day_id" placeholder="Select The Major">
-            <?= $day_option ?>
-            </select>
-     </div>
-
-     <div class="form-floating mb-3">
-      <label for="floatingInput">Work Time</label>
-        <input type="text" class="form-control" id="floatingInput" name="WORK_TIME" placeholder="Work Time">
-    </div>
-
-    <div class="form-floating mb-3">
-      <label for="floatingInput">Language</label>
-      <select class="form-control" name="language" placeholder="Select Language">
-            <option>TH</option>
-            <option>ENG</option>
-            </select>
-    </div>
-
-    <div class="form-floating mb-3">
-      <label for="floatingInput">Hour Per Week</label>
-        <input type="text" class="form-control" id="floatingInput" name="HOUR" placeholder="HOUR PER WEEK">
-    </div>
-
-
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="add" class="btn btn-primary">Add Courses</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
-
         <div class="content mt-5">
         <table class="table table-striped">
           <tr>
@@ -222,10 +153,6 @@ ORDER BY s.sem_number,m.m_status;";
           <?php while($data=mysqli_fetch_assoc($MatchCourse))
           { 
         ?>
-
-
-        <!---------------- ---------------------------->
-        
           <tr>
             <td><?=$data['m_status'] == 1 ? "open":"close"?></td>
             <td><?=$data['sem_number']?></td>
@@ -237,8 +164,7 @@ ORDER BY s.sem_number,m.m_status;";
             <td><?=$data['t_time']?></td>
             <td><?=$data['language']?></td>
             <td><?=$data['hr_per_week']?></td>
-            <!-- <td><?=$data['hr_per_week']?></td> -->
-            <!-- <td><?=$data['hr_per_week']?></td> -->
+            
             <td>
             
             <?php if($data['approved'] != 0) {?>
@@ -252,6 +178,7 @@ ORDER BY s.sem_number,m.m_status;";
             </button> 
             <button class="btn btn-danger" data-target="#delete<?=$data['m_course_id']?>" data-toggle="modal" >Delete</button>
             </td>
+            </tr>
             <?php } ?>
 
             <!--  Edit -->

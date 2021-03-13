@@ -5,7 +5,7 @@ session_start();
 
 
 require_once '../../../db/connect.php';
-if($_SESSION['role'] == 3) header('location:../../index.php');
+if($_SESSION['role'] != 2) header('location:../../index.php');
 
 if($_GET['id'] && $_GET['type'])
 {

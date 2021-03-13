@@ -4,7 +4,7 @@ session_start();
 
 require_once('../../../db/connect.php');
 
-$redirect = 'location: ../request_courses.php';
+$redirect = 'location: ../assign_courses.php';
 
 $conn->init();
 
