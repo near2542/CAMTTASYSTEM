@@ -51,7 +51,7 @@ if(isset($_SESSION['error']))
                     <ul class="nav child_menu">
                       <li><a href="./request_courses.php">Request For Courses</a></li>
                       <li><a href="./request_TA.php">Request For TA</a></li>
-                      <li><a href="./approve_ta.php">Request For Courses</a></li>
+                      <li><a href="./approve_ta.php">Approve TA</a></li>
                       <li><a href="./approved_ta.php">Request For Courses</a></li>
                     </ul>
                   </li>
@@ -65,15 +65,7 @@ if(isset($_SESSION['error']))
 
               <!-- /menu footer buttons -->
               <div class="sidebar-footer hidden-small">
-                <a data-toggle="tooltip" data-placement="top" title="Settings">
-                  <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                </a>
-                <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                  <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-                </a>
-                <a data-toggle="tooltip" data-placement="top" title="Lock">
-                  <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                </a>
+              
                 <a data-toggle="tooltip" data-placement="top" title="Logout" href="../logout.php">
                   <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                 </a>
@@ -96,10 +88,7 @@ if(isset($_SESSION['error']))
               <?= $_SESSION['id'] ?>
             </a>
             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="javascript:;"> Profile</a>
-              <a class="dropdown-item" href="javascript:;">
-                <span>Settings</span>
-              </a>
+            
               <a class="dropdown-item" href="../logout.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
             </div>
           </li>

@@ -3,13 +3,9 @@
 require_once('../../db/connect.php');
 $conn->init();
 $major = $conn->query("SELECT * from MAJOR");
-
-
-
 $option = '';
 while($row = mysqli_fetch_assoc($major))
 {
-
   $option .= sprintf('<option value="%d">%s</option>',
   $conn->real_escape_string($row['major_id']),
   $conn->real_escape_string($row['major_name']));
@@ -51,7 +47,7 @@ while($row = mysqli_fetch_assoc($major))
 
 
 
-
+  
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">

@@ -50,7 +50,7 @@ $result =mysqli_query($conn,$approveQuery);
 if(!$result || mysqli_error($conn))
 {
     $_SESSION['error'] = 'SOMETHING WENT WRONG';
-    header('location:../approve.ta.php');
+    // header('location:../approve.ta.php');
     exit(0);
 }
 
@@ -84,6 +84,6 @@ if($totalNow >= $total)
 
 
 $_SESSION['error'] = 'add success';
-header('location:../approve_ta.php');
+// header('location:../approve_ta.php');
 exit(0);
 ?>
