@@ -122,7 +122,7 @@ while($row = mysqli_fetch_assoc($major))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./approve_ta/approve.php?id=<?=$data['course_id']?>" method="POST">
+      <form action="./approve_ta/approve.php?id=<?=$data['register_id']?>&type=<?=$data['user_type']?>" method="POST">
       <div class="modal-body">
        
       <div class="form-floating mb-3">

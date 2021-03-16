@@ -62,6 +62,7 @@ while($row = mysqli_fetch_assoc($major))
 	INNER JOIN semester s on m.sem_id = s.sem_id
 	INNER JOIN day_work d on d.id = m.t_date
 	INNER JOIN ta_request t ON t.m_course_id = m.m_course_id
+  INNER JOIN major maj on maj.major_id = c.major_id
 	WHERE approved = 1 AND m_status != 0 AND m.user_id = '{$_SESSION['id']}' and r_status = 1";
 
     $talist = $conn->query($talistQuery);
@@ -130,7 +131,7 @@ while($row = mysqli_fetch_assoc($major))
             <td><?=$data['major_name']?></td>
             <td><?=$data['f_name']?> <?=$data['l_name']?></td>
             <td>
-            <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Edit</button> 
+            <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Approve</button> 
             <button class="btn btn-danger" data-target="#delete<?=$data['course_id']?>" data-toggle="modal">Delete</button>
             </td>
 
@@ -144,7 +145,7 @@ while($row = mysqli_fetch_assoc($major))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./course/update_logic.php?old=<?=$data['course_id']?>" method="POST">
+      <form action="./approve_ta/approve.php?old=<?=$data['course_id']?>" method="POST">
       <div class="modal-body">
        
       <div class="form-floating mb-3">

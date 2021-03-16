@@ -3,7 +3,7 @@
     if(isset($_POST['submit']))
     {
         $conn->init();
-        $query = sprintf("SELECT user_id,username,user_type AS role FROM user_tbl where username = '%s' and password = '%s'",
+        $query = sprintf("SELECT user_id,username,user_type AS role,f_name,l_name FROM user_tbl where username = '%s' and password = '%s'",
         $conn->real_escape_string($_POST['username']),
         $conn->real_escape_string($_POST['password'])
             );
@@ -16,6 +16,7 @@
         $_SESSION['user'] = $result['username'];
         $_SESSION['role'] = $result['role'];
         $_SESSION['id'] = $result['user_id'];
+        $_SESSION['name'] = "{$result['f_name']} {$result['l_name']}";
         header('location: index.php');
          } 
         else header('location: login.php?error=no');

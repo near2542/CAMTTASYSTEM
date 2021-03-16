@@ -146,12 +146,12 @@ while($row = mysqli_fetch_assoc($major))
             <td><?=$data['year']?> </td>
             <td><?=$data['sem_number']?> </td>
             <td>
-            <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Approve</button> 
+            <button class="btn btn-success" data-target="#edit<?=$data['register_id']?>" data-toggle="modal">Approve</button> 
             
             </td>
 
             <!--  Edit -->
-            <div class="modal fade" id="edit<?=$data['course_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="edit<?=$data['register_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

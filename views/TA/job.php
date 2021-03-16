@@ -76,20 +76,20 @@ while($row = mysqli_fetch_assoc($major))
             INNER JOIN semester s ON m.sem_id = s.sem_id
             INNER JOIN day_work d ON m.t_date = d.id
             LEFT JOIN register r ON r.m_course_id = m.m_course_id
-            WHERE approved = 1  AND s.sem_id = '{$year}'  AND r.user_id = {$_SESSION['id']} OR r.user_id IS NULL
+            WHERE approved = 1  AND s.sem_id = '{$year}'  AND r.user_id = '{$_SESSION['id']}' OR r.user_id IS NULL
             order by r_status desc";
         }
         else{
-          $filterQuery= "SELECT *,m.m_course_id AS matching_id
-          FROM ta_request t INNER JOIN matching_course m ON t.m_course_id = m.m_course_id
-          INNER JOIN course c ON c.course_id = m.course_id
-          INNER JOIN user_tbl u ON u.user_id = m.user_id
-          INNER JOIN major ma ON ma.major_id = c.major_id
-          INNER JOIN semester s ON m.sem_id = s.sem_id
-          INNER JOIN day_work d ON m.t_date = d.id
-          LEFT JOIN register r ON r.m_course_id = m.m_course_id
-          WHERE approved = 1 AND r.user_id = {$_SESSION['id']} OR r.user_id IS NULL
-          order by r_status desc";
+            $filterQuery= "SELECT *,m.m_course_id AS matching_id
+            FROM ta_request t INNER JOIN matching_course m ON t.m_course_id = m.m_course_id
+            INNER JOIN course c ON c.course_id = m.course_id
+            INNER JOIN user_tbl u ON u.user_id = m.user_id
+            INNER JOIN major ma ON ma.major_id = c.major_id
+            INNER JOIN semester s ON m.sem_id = s.sem_id
+            INNER JOIN day_work d ON m.t_date = d.id
+            LEFT JOIN register r ON r.m_course_id = m.m_course_id
+            WHERE approved = 1 AND r.user_id = '{$_SESSION['id']}' OR r.user_id IS NULL
+            order by r_status desc";
         }
         $openJob = $conn->query($filterQuery);
         ?>
