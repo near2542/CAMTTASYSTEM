@@ -4,15 +4,7 @@ require_once('../../db/connect.php');
 $conn->init();
 $major = $conn->query("SELECT * from MAJOR");
 $courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id where c.deleted != 1 ");
-$openJob = $conn->query("SELECT *
-FROM ta_request t INNER JOIN matching_course m ON t.m_course_id = m.m_course_id
-INNER JOIN course c ON c.course_id = m.course_id
-INNER JOIN user_tbl u ON u.user_id = m.user_id
-INNER JOIN major ma ON ma.major_id = c.major_id
-INNER JOIN semester s ON m.sem_id = s.sem_id
-INNER JOIN day_work d ON m.t_date = d.id
-LEFT JOIN register r ON r.m_course_id = m.m_course_id
-WHERE approved = 1 AND m_status != 0");
+
 
 
 
@@ -68,6 +60,17 @@ while($row = mysqli_fetch_assoc($major))
         
         <?php require_once('TAheader.php');?>
         <?php 
+
+$signedJob = $conn->query("SELECT *,m.m_course_id AS matching_id,ISNULL(r.m_course_id) AS matching_course_id
+FROM ta_request t 
+LEFT JOIN matching_course m ON t.m_course_id = m.m_course_id
+LEFT JOIN course c ON c.course_id = m.course_id
+LEFT JOIN user_tbl u ON u.user_id = m.user_id
+LEFT JOIN major ma ON ma.major_id = c.major_id
+LEFT JOIN semester s ON m.sem_id = s.sem_id
+LEFT JOIN day_work d ON m.t_date = d.id
+LEFT JOIN register r ON r.m_course_id = m.m_course_id AND (r.user_id = '{$_SESSION['id']}')
+WHERE approved = 1 AND r_status = 2");
   
   ?>
        
@@ -124,7 +127,7 @@ while($row = mysqli_fetch_assoc($major))
             <th>Language</th>
             <th>Action</th>
         </tr>
-        <?php while($data=mysqli_fetch_assoc($openJob))
+        <?php while($data=mysqli_fetch_assoc($signedJob))
           {
         ?>
 
@@ -138,10 +141,10 @@ while($row = mysqli_fetch_assoc($major))
             <td> <?= $data['f_name']?>  <?= $data['l_name']?></td>
             <td><?=$data['language']?> </td>
             <td>
-            <?php if($data['user_id'] === null):?>
+            <?php if($data['r_status'] ==0 || $data['r_status'] == null):?>
             <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Sign</button>
-            <?php else: ?> 
-            <button class="btn btn-danger" data-target="#delete<?=$data['course_id']?>" data-toggle="modal">Unsigned</button>
+            <?php elseif($data['r_status'] == 2) :?> 
+            <button class="btn btn-danger" disable data-target="#delete<?=$data['course_id']?>" data-toggle="modal">Appoved</button>
             <?php endif; ?>
             </td>
 

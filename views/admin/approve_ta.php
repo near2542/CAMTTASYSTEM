@@ -160,9 +160,8 @@ while($row = mysqli_fetch_assoc($major))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./approve_ta/approve.php?id=<?=$data['register_id']?>&type=<?=$data['user_type']?>" method="POST">
+      <form action="./approve_ta/approve.php?id=<?=$data[0]?>&type=<?=$data['user_type']?>" method="POST">
       <div class="modal-body">
-       
       <div class="form-floating mb-3">
       <label for="floatingInput">Course ID</label>
         <input type="text" class="form-control" id="floatingInput" value="<?=$data['course_id']?>"  name="course_id" placeholder="Course ID">
