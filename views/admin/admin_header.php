@@ -51,6 +51,7 @@ require_once('../../db/connect.php');
                   <li><a href="./available_courses.php">Add </a></li>
                   <li><a href="./assign_courses.php">Assign Courses</a></li>
                   <li><a href="./approve_ta.php">Approve TA</a></li>
+                  <li><a href="./approved_ta.php">Approved TA List</a></li>
                   <li><a href="./approve_request_TA.php">Approve Request TA</a></li>
                 </ul>
               </li>

@@ -17,6 +17,7 @@ if( $_SESSION['role']!=2)
 
 if(isset($_POST['add']))
 {
+$id = $_SESSION['id'];
 $sem_id = $_POST['sem_id'];
 $course_id = $_POST['course_id'];
 $section = $_POST['section'];
@@ -32,7 +33,7 @@ else {
     exit(0);
 }
 
-$query = sprintf("INSERT INTO matching_course values ('','%d','%d','%s','%s','%s','%d','%s','%s','1')",
+$query = sprintf("INSERT INTO matching_course values ('','%d','%d','%s','%s','%s','%d','%s','%s','1','0')",
         $conn->real_escape_string($sem_id),
         $conn->real_escape_string($course_id),
         $conn->real_escape_string($section),
@@ -50,18 +51,18 @@ if(mysqli_error($conn)){
     echo mysqli_error($conn);
 }
 
-if($result->num_rows < 1   )
+if(!$result)
 {
     $conn->close();
     $_SESSION['error'] = "Something Went Wrong!";
-    header($redirect); exit(0);
+    echo mysqli_error($conn);
+    // header($redirect); exit(0);
 }
 
 else{
     $_SESSION['error'] = "Add Course Success";
 }
 
-$_SESSION['error'] = "Something Went Wrong!";
  header($redirect);
  exit(0);
 

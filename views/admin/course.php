@@ -3,7 +3,7 @@
 require_once('../../db/connect.php');
 $conn->init();
 $major = $conn->query("SELECT * from MAJOR");
-$courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id where c.deleted != 1 ");
+
 
 
 $option = '';
@@ -58,13 +58,35 @@ while($row = mysqli_fetch_assoc($major))
         
         <?php require_once('admin_header.php');?>
         <?php 
-  
+     $filterQuery = '';
+     if(isset($_GET['status']) and $_GET['status'] != 'all')
+     {
+      $courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id where c.deleted = '$status'  order by c.deleted ");
+     }
+     else{
+      $courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id   order by c.deleted ");
+     }
   ?>
+
+
        
         <!-- page content -->
         <div class="right_col" role="main" style="min-height:100vh">
-            <div class="panel p-4 mt-5">
+        <div class="p-4 w-25" >
+        <form action="./course.php" method="GET">
+        
+        <label for="floatingInput"><h2>Search by Year:</h2>  </label>
+     <select class="form-control" default="<?= $_GET['status']? $_GET['status'] : 'all'?>" name="year" placeholder="Select The Major">
+          <option>All</option>
+          <option value="0">Open Courses</option>
+          <option value="1">Closed Courses</option>
+            </select>
+        <button type="submit"  class="d-inline btn btn-danger mt-1">Search</button>
+        </form>
+    </div>
+            <div class="panel p-4 ">
                 <div><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Course</a></div>
+                
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -121,8 +143,13 @@ while($row = mysqli_fetch_assoc($major))
             <td><?=$data['course_name']?></td>
             <td><?=$data['major_name']?></td>
             <td>
+            <?php if($data['deleted'] == 0 ): ?>
             <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Edit</button> 
             <button class="btn btn-danger" data-target="#delete<?=$data['course_id']?>" data-toggle="modal">Delete</button>
+            <?php  elseif($data['deleted'] == 1 ): ?>
+            <button class="btn btn-danger" data-target="#delete<?=$data['course_id']?>" data-toggle="modal">Retrieve Course</button>
+
+            <?php endif; ?>
             </td>
 
             <!--  Edit -->

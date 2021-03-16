@@ -32,7 +32,7 @@ var_dump($existCourses->num_rows);
 if($existCourses->num_rows > 0) { 
     $conn->close();
     $_SESSION['error'] = "Course Duplicated";
-    header('location: ./course.php'); exit(0);
+    header($redirect); exit(0);
 }
 
 $insert = sprintf("Update course SET course_id='%d',course_name='%s',major_id='%d' where course_id = '%d' ",

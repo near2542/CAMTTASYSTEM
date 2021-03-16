@@ -76,7 +76,7 @@ while($row = mysqli_fetch_assoc($major))
             INNER JOIN semester s ON m.sem_id = s.sem_id
             INNER JOIN day_work d ON m.t_date = d.id
             LEFT JOIN register r ON r.m_course_id = m.m_course_id
-            WHERE approved = 1  AND s.sem_id = '{$year}' AND m_status != 0 AND r.user_id = 3  OR r.user_id IS NULL
+            WHERE approved = 1  AND s.sem_id = '{$year}'  AND r.user_id = {$_SESSION['id']} OR r.user_id IS NULL
             order by r_status desc";
         }
         else{
@@ -88,7 +88,7 @@ while($row = mysqli_fetch_assoc($major))
           INNER JOIN semester s ON m.sem_id = s.sem_id
           INNER JOIN day_work d ON m.t_date = d.id
           LEFT JOIN register r ON r.m_course_id = m.m_course_id
-          WHERE approved = 1 AND m_status != 0 AND r.user_id = {$_SESSION['id']} OR r.user_id IS NULL
+          WHERE approved = 1 AND r.user_id = {$_SESSION['id']} OR r.user_id IS NULL
           order by r_status desc";
         }
         $openJob = $conn->query($filterQuery);
