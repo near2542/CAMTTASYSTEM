@@ -1,5 +1,5 @@
 <?php
-$mode = "develop";
+$mode = "production";
 if($mode !== "production")
 {
 	$host = 'localhost';
@@ -10,10 +10,10 @@ if($mode !== "production")
 }
 else {
 	$host = 'mysql-for-hosting';
-	$username = 'tadb';
-	$password = 'w09gmt6EP6D5';
+	$username = 'tasystemdb';
+	$password = 'O6jya0MONo41';
 	$port = null;
-	$dbname = 'tadb';
+	$dbname = 'tasystemdb';
 }
 	$conn= new mysqli($host,$username,$password,$dbname,$port) or die("Could not connect to mysql".mysqli_error($conn));
 	

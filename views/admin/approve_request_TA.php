@@ -1,13 +1,7 @@
-<!-- SELECT *
-FROM matching_course m
-LEFT JOIN ta_request t ON t.m_course_id = m.m_course_id
-INNER JOIN semester s on m.sem_id = s.sem_id
-INNER JOIN course c on m.course_id = c.course_id
-INNER JOIN day_work d on m.t_date = d.id
-WHERE user_id = 2 and m.deleted AND t.approved IS NOT null
-ORDER BY s.sem_number,m.m_status;
- -->
-
+ <?php
+session_start();
+ ?>
+ 
  <?php 
 
 require_once('../../db/connect.php');
@@ -16,14 +10,6 @@ $courses = $conn->query("SELECT course_id,course_name,m.major_id,major_name
 from course c
 INNER JOIN major m on c.major_id = m.major_id
 where deleted !=1 ORDER BY course_id,major_id");
-
-// $AssignedCourse = $conn->query("SELECT * FROM matching_course m
-// INNER JOIN semester s on m.sem_id = s.sem_id
-// INNER JOIN course c on m.course_id = c.course_id
-// INNER JOIN day_work d on m.t_date = d.id
-// LEFT JOIN ta_request t ON t.m_course_id = m.m_course_id
-// WHERE user_id = {$_SESSION['id']} and m.deleted = 0
-// ORDER BY s.sem_number,m.m_status");
 
 
 $ta_request = "SELECT *
@@ -35,9 +21,7 @@ INNER JOIN day_work d ON m.t_date = d.id
 ";
 
 $semester = $conn->query("SELECT * from semester");
-$day = $conn->query("SELECT * from DAY_WORK");
-
-// $courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id where c.deleted != 1 ");
+$day = $conn->query("SELECT * from day_work");
 
 
 $SemesterOption = '';
@@ -107,7 +91,7 @@ while($row = mysqli_fetch_assoc($day))
     <div class="container body">
       <div class="main_container">
         
-        <?php require_once('admin_header.php');?>
+        <?php require_once('./admin_header.php');?>
         <?php 
   // $queryMatchCourse = "SELECT * FROM matching_course m
   // INNER JOIN semester s on m.sem_id = s.sem_id
