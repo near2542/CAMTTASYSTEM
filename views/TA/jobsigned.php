@@ -6,6 +6,12 @@ $major = $conn->query("SELECT * from MAJOR");
 $courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id where c.deleted != 1 ");
 
 
+$semesterQuery = $conn->query("SELECT * from semester");
+$semesterOption = '<option value="all">all</option>';
+while($row = mysqli_fetch_assoc($semesterQuery))
+{
+  $semesterOption .= "<option value='{$row['sem_id']}'>semester {$row['sem_number']} year {$row['year']}</option>";
+}
 
 
 $option = '';
@@ -77,43 +83,29 @@ WHERE approved = 1 AND r_status = 2");
         <!-- page content -->
         <div class="right_col" role="main" style="min-height:100vh">
             <div class="panel p-4 mt-5">
-                <div><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Course</a></div>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add new courses</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="./course/add_logic.php" method="POST">
-      <div class="modal-body">
-       
-      <div class="form-floating mb-3">
-      <label for="floatingInput">Course ID</label>
-        <input type="text" class="form-control" id="floatingInput" name="course_id" placeholder="Course ID">
-    </div>
-     <div class="form-floating mb-3">
-       <label for="floatingInput">Course Name</label>
-         <input type="text" name="course_name" class="form-control"  id="floatingInput" placeholder="Course Name">
+            <?php if(isset($_GET['year'])){
+          $yearQuery = sprintf("SELECT * from semester where sem_id = '%d'",$_GET['year']);
 
+            $year = mysqli_query($conn,$yearQuery);
+          $yearShow = mysqli_fetch_row($year);
 
-     </div> 
-     <label for="floatingInput">Major: </label>
-     <select class="form-control" name="major_id" placeholder="Select The Major">
-     <?= $option ?>
+        }?>
+         <div class="w-25" >
+        <form action="./jobsigned.php" method="GET">
+        <?php if(isset($_GET['year'])){
+          $yearQuery = sprintf("SELECT * from semester where sem_id = '%d'",$_GET['year']);
+
+            $year = mysqli_query($conn,$yearQuery);
+          $yearShow = mysqli_fetch_row($year);
+
+        }?>
+        <label for="floatingInput"><h2>Search by Year: <?= isset($_GET['year']) && $_GET['year'] != 'all'? "Sem {$yearShow[1]} Year{$yearShow[2]}" : null?></h2>  </label>
+     <select class="form-control" default="<?= $_GET['year']? $_GET['year'] : 'all'?>" name="year" placeholder="Select The Major">
+     <?= $semesterOption ?>
             </select>
-           
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="add" class="btn btn-primary">Add Courses</button>
-      </div>
-      </form>
+        <button type="type="submit"  class="d-inline btn btn-danger mt-1">Search</button>
+        </form>
     </div>
-  </div>
-</div>
 
         <div class="content mt-5">
         <table class="table table-striped">
@@ -144,7 +136,7 @@ WHERE approved = 1 AND r_status = 2");
             <?php if($data['r_status'] ==0 || $data['r_status'] == null):?>
             <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Sign</button>
             <?php elseif($data['r_status'] == 2) :?> 
-            <button class="btn btn-danger" disable data-target="#delete<?=$data['course_id']?>" data-toggle="modal">Appoved</button>
+            <button class="btn btn-danger" disable data-target="#delete<?=$data['course_id']?>" disabled data-toggle="modal">Appoved</button>
             <?php endif; ?>
             </td>
 

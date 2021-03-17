@@ -66,7 +66,7 @@ while($row = mysqli_fetch_assoc($major))
 	INNER JOIN ta_request t ON t.m_course_id = m.m_course_id
 	INNER JOIN user_tbl user  ON user.user_id = m.user_id
   INNER JOIN major  ON major.major_id = c.major_id 
-	WHERE approved = 1  and r_status = 2 AND m.user_id = '{$_SESSION['id']}'";
+	WHERE approved = 1  and r_status = 2 AND requested_by = '{$_SESSION['id']}'";
 
     $talist = $conn->query($talistQuery);
   ?>

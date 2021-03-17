@@ -36,7 +36,6 @@ else{
     $row = mysqli_fetch_row($limit);
     $total = $row[0];
 }
- 
 
 
 
@@ -68,7 +67,7 @@ if(!$result || mysqli_error($conn))
 
 $totalNow = mysqli_fetch_row($result);
 
-if($totalNow[0] >= $total)
+if($totalNow[0]+1 > $total)
 {   $updateQuery = sprintf("UPDATE matching_course SET m_status = 0 
                     WHERE m_course_id = (SELECT m_course_id from register WHERE register_id = '%d') ",$registerid);
     $update = $conn->query($updateQuery);
@@ -77,6 +76,9 @@ if($totalNow[0] >= $total)
         echo mysqli_error($conn);
         die('SOME THING WENT WRONG' );
     }
+    $_SESSION['error'] ='add success | Number is fulfilled';
+    header('location:../approve_ta.php');
+    exit(0);
   
 }
 

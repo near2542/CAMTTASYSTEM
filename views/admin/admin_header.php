@@ -31,7 +31,7 @@ require_once('../../db/connect.php');
         <div class="profile_info">
           <span>Welcome,</span>
           <h2>
-            <?= $_SESSION['user'] ?>
+          <?= $_SESSION['name'] ?>
           </h2>
         </div>
       </div>

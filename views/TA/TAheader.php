@@ -111,7 +111,7 @@ require_once('../../db/connect.php');
             <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown"
               data-toggle="dropdown" aria-expanded="false">
           
-              <?= $_SESSION['id'] ?>
+              <?= $_SESSION['name'] ?>
             </a>
             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
               
