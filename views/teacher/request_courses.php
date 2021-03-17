@@ -128,12 +128,12 @@ while($row = mysqli_fetch_assoc($day))
 
      <div class="form-floating mb-3">
       <label for="floatingInput">section</label>
-        <input type="text" class="form-control" id="floatingInput" name="section" placeholder="Course ID">
+        <input type="text" class="form-control" id="floatingInput" name="section" placeholder="Section">
     </div>
 
     <div class="form-floating mb-3">
        <label for="floatingInput">Date:</label>
-       <select class="form-control" name="day_id" placeholder="Select The Major">
+       <select class="form-control" name="day_id" placeholder="Select Date">
             <?= $day_option ?>
             </select>
      </div>
@@ -216,7 +216,7 @@ while($row = mysqli_fetch_assoc($day))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./request/add_logic.php" method="POST">
+      <form action="./request/update_logic.php?old=<?=$data['m_course_id']?>" method="POST">
       <div class="modal-body">
        
      <div class="form-floating mb-3">
@@ -234,7 +234,7 @@ while($row = mysqli_fetch_assoc($day))
 
      <div class="form-floating mb-3">
       <label for="floatingInput">section</label>
-        <input type="text" class="form-control" id="floatingInput" name="section" placeholder="Course ID">
+        <input type="text" class="form-control" id="floatingInput" value="<?=$data['section']?>" name="section" placeholder="Section">
     </div>
 
     <div class="form-floating mb-3">
@@ -246,12 +246,12 @@ while($row = mysqli_fetch_assoc($day))
 
      <div class="form-floating mb-3">
       <label for="floatingInput">Work Time</label>
-        <input type="text" class="form-control" id="floatingInput" name="WORK_TIME" placeholder="Work Time">
+        <input type="text" class="form-control" id="floatingInput" value="<?=$data['t_time']?>" name="WORK_TIME" placeholder="Work Time">
     </div>
 
     <div class="form-floating mb-3">
       <label for="floatingInput">Language</label>
-      <select class="form-control" name="language" placeholder="Select Language">
+      <select class="form-control" name="language" default="<?=$data['language']?>" placeholder="Select Language">
             <option>TH</option>
             <option>ENG</option>
             </select>
@@ -259,7 +259,7 @@ while($row = mysqli_fetch_assoc($day))
 
     <div class="form-floating mb-3">
       <label for="floatingInput">Hour Per Week</label>
-        <input type="text" class="form-control" id="floatingInput" name="HOUR" placeholder="HOUR PER WEEK">
+        <input type="text" class="form-control" id="floatingInput" value="<?=$data['hr_per_week']?>" name="HOUR" placeholder="HOUR PER WEEK">
     </div>
 
 
@@ -267,7 +267,7 @@ while($row = mysqli_fetch_assoc($day))
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="add" class="btn btn-primary">Add Courses</button>
+        <button type="submit" name="update" class="btn btn-primary">Edit Courses</button>
       </div>
       </form>
     </div>

@@ -155,7 +155,7 @@ while($row = mysqli_fetch_assoc($major))
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Update courses</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Approve TA</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -164,20 +164,21 @@ while($row = mysqli_fetch_assoc($major))
       <div class="modal-body">
       <div class="form-floating mb-3">
       <label for="floatingInput">Course ID</label>
-        <input type="text" class="form-control" id="floatingInput" value="<?=$data['course_id']?>"  name="course_id" placeholder="Course ID">
+        <input type="text" class="form-control" id="floatingInput" value="<?=$data['course_id']?>" disabled name="course_id" placeholder="Course ID">
     </div>
      <div class="form-floating mb-3">
        <label for="floatingInput">Course Name</label>
-         <input type="text" name="course_name" class="form-control" value="<?=$data['course_name']?>" id="floatingInput" placeholder="Course Name">
-
-
+         <input type="text" name="course_name" class="form-control" value="<?=$data['course_name']?>" disabled id="floatingInput" placeholder="Course Name">
      </div> 
      <label for="floatingInput">Major: </label>
-     <select class="form-control" name="major_id" placeholder="Select The Major">
+     <select class="form-control" name="major_id" default="<?=$data['major']?>" disabled placeholder="Select The Major">
      <?= $option ?>
             </select>
-           
       </div>
+      <div class="form-floating mb-3 p-2  ">
+       <label for="floatingInput">Name</label>
+         <input type="text" name="course_name" class="form-control" value="<?=$data['f_name']?> <?=$data['l_name']?>" disabled id="floatingInput" placeholder="Course Name">
+     </div> 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="submit" name="update" class="btn btn-primary">Update</button>
