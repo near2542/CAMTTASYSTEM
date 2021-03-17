@@ -288,7 +288,7 @@ ORDER BY s.sem_number,m.m_status;";
 
 <!-- Delete -->
           </tr>
-          <?= $data['m_course_id']?>
+          
           <!------------------ --------------------->
   <?php }; $conn->close()?>
         </table>
