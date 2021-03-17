@@ -1,8 +1,8 @@
 <?php
-
+session_start();
 require_once('../../db/connect.php');
 $conn->init();
-$major = $conn->query("SELECT * from MAJOR");
+$major = $conn->query("SELECT * from major");
 $option = '';
 while ($row = mysqli_fetch_assoc($major)) {
   $option .= sprintf(

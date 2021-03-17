@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 require_once('../../db/connect.php');
 $conn->init();
 $courses = $conn->query("SELECT course_id,course_name,m.major_id,major_name 
@@ -7,7 +7,7 @@ from course c
 INNER JOIN major m on c.major_id = m.major_id
 where deleted !=1 ORDER BY course_id,major_id");
 $semester = $conn->query("SELECT * from semester");
-$day = $conn->query("SELECT * from DAY_WORK");
+$day = $conn->query("SELECT * from day_work");
 $teacher = $conn->query("SELECT * from user_tbl where user_type = 2");
 // $courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id where c.deleted != 1 ");
 

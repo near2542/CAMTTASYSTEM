@@ -1,8 +1,8 @@
 <?php 
-
+session_start();
 require_once('../../db/connect.php');
 $conn->init();
-$major = $conn->query("SELECT * from MAJOR");
+$major = $conn->query("SELECT * from major");
 $courses = $conn->query("SELECT * FROM course c LEFT JOIN major m ON c.major_id = m.major_id where c.deleted != 1 ");
 
 

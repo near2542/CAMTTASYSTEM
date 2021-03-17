@@ -1,8 +1,7 @@
 <?php
-session_start();
 if($_SESSION['role'] !== "1" || !isset($_SESSION['role'])) {
     echo "<script>No permission</script>";
-    header('location: ../index.php');
+    // header('location: ../index.php');
 }
 if(isset($_SESSION['error']))
 {
