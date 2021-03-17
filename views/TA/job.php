@@ -68,28 +68,31 @@ while($row = mysqli_fetch_assoc($major))
         if(isset($_GET['year']) && $_GET['year'] != 'all')
         {
           $year = $_GET['year'];
-            $filterQuery = "SELECT *,m.m_course_id AS matching_id
-            FROM ta_request t INNER JOIN matching_course m ON t.m_course_id = m.m_course_id
-            INNER JOIN course c ON c.course_id = m.course_id
-            INNER JOIN user_tbl u ON u.user_id = m.user_id
-            INNER JOIN major ma ON ma.major_id = c.major_id
-            INNER JOIN semester s ON m.sem_id = s.sem_id
-            INNER JOIN day_work d ON m.t_date = d.id
-            LEFT JOIN register r ON r.m_course_id = m.m_course_id
-            WHERE approved = 1  AND s.sem_id = '{$year}'  AND r.user_id = '{$_SESSION['id']}' OR r.user_id IS NULL
-            order by r_status desc";
+            $filterQuery = "SELECT *,m.m_course_id AS matching_id,ISNULL(r.m_course_id) AS matching_course_id
+            FROM ta_request t 
+				LEFT JOIN matching_course m ON t.m_course_id = m.m_course_id
+            LEFT JOIN course c ON c.course_id = m.course_id
+            LEFT JOIN user_tbl u ON u.user_id = m.user_id
+            LEFT JOIN major ma ON ma.major_id = c.major_id
+            LEFT JOIN semester s ON m.sem_id = s.sem_id
+            LEFT JOIN day_work d ON m.t_date = d.id
+            LEFT JOIN register r ON r.m_course_id = m.m_course_id AND (r.user_id = '{$_SESSION['id']}')
+            WHERE approved = 1 and s.sem_id = {$year}";
         }
         else{
-            $filterQuery= "SELECT *,m.m_course_id AS matching_id
-            FROM ta_request t INNER JOIN matching_course m ON t.m_course_id = m.m_course_id
-            INNER JOIN course c ON c.course_id = m.course_id
-            INNER JOIN user_tbl u ON u.user_id = m.user_id
-            INNER JOIN major ma ON ma.major_id = c.major_id
-            INNER JOIN semester s ON m.sem_id = s.sem_id
-            INNER JOIN day_work d ON m.t_date = d.id
-            LEFT JOIN register r ON r.m_course_id = m.m_course_id
-            WHERE approved = 1 AND r.user_id = '{$_SESSION['id']}' OR r.user_id IS NULL
-            order by r_status desc";
+            $filterQuery= "SELECT *,m.m_course_id AS matching_id,ISNULL(r.m_course_id) AS matching_course_id
+            FROM ta_request t 
+				LEFT JOIN matching_course m ON t.m_course_id = m.m_course_id
+            LEFT JOIN course c ON c.course_id = m.course_id
+            LEFT JOIN user_tbl u ON u.user_id = m.user_id
+            LEFT JOIN major ma ON ma.major_id = c.major_id
+            LEFT JOIN semester s ON m.sem_id = s.sem_id
+            LEFT JOIN day_work d ON m.t_date = d.id
+            LEFT JOIN register r ON r.m_course_id = m.m_course_id AND (r.user_id = '{$_SESSION['id']}')
+            WHERE approved = 1 
+         
+         
+         ";
         }
         $openJob = $conn->query($filterQuery);
         ?>
@@ -104,8 +107,14 @@ while($row = mysqli_fetch_assoc($major))
          </h1>
       <div class="w-25" >
         <form action="./job.php" method="GET">
-        
-        <label for="floatingInput"><h2>Search by Year:</h2>  </label>
+        <?php if(isset($_GET['year'])){
+          $yearQuery = sprintf("SELECT * from semester where sem_id = '%d'",$_GET['year']);
+
+            $year = mysqli_query($conn,$yearQuery);
+          $yearShow = mysqli_fetch_row($year);
+
+        }?>
+        <label for="floatingInput"><h2>Search by Year: <?= isset($_GET['year']) && $_GET['year'] != 'all'? "Sem {$yearShow[1]} Year{$yearShow[2]}" : null?></h2>  </label>
      <select class="form-control" default="<?= $_GET['year']? $_GET['year'] : 'all'?>" name="year" placeholder="Select The Major">
      <?= $semesterOption ?>
             </select>
@@ -116,7 +125,7 @@ while($row = mysqli_fetch_assoc($major))
         <div class="content mt-5">
         <table class="table table-striped">
             <tr>
-              <th>register ID</th>
+             
               <th>Course ID</th>
             <th>Course Name</th>
             <th>Major Name</th>
@@ -134,7 +143,7 @@ while($row = mysqli_fetch_assoc($major))
 
         <!---------------- ---------------------------->
           <tr>
-            <td><?=$data['register_id']?></td>
+          <!-- <td><?=$data['request_id']?></td> -->
             <td><?=$data['course_id']?></td>
             <td><?=$data['course_name']?></td>
             <td><?=$data['major_name']?> </td>
@@ -143,10 +152,10 @@ while($row = mysqli_fetch_assoc($major))
             <td> <?= $data['f_name']?>  <?= $data['l_name']?></td>
             <td><?=$data['language']?> </td>
             <td>
-            <?php if($data['user_id'] == null || $data['r_status'] == 0):?>
-            <button class="btn btn-success" data-target="#edit<?=$data['register_id']?>" data-toggle="modal">
+            <?php if( $data['r_status'] == 0 || $data['r_status'] == null):?>
+            <button class="btn btn-success" data-target="#edit<?=$data['request_id']?>" data-toggle="modal">
             Sign
-                <!-- <a class="text-white" href="./job/sign.php?id=<?= $_SESSION['id']?>&&m_course_id=<?=$data['matching_id']?>">Sign</a> -->
+                
             </button>
             <?php elseif ($data['r_status'] == 1 ) : ?> 
                 <button class="btn btn-danger"  data-toggle="modal">
@@ -159,7 +168,7 @@ while($row = mysqli_fetch_assoc($major))
             </td>
 
             <!--  Edit -->
-            <div class="modal fade" id="edit<?=$data['register_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="edit<?=$data['request_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

@@ -46,9 +46,9 @@
 
        
         <!-- page content -->
-        <div class="right_col" role="main">
+        <div class="right_col" role="main" style="min-height:100vh">
           <!-- top tiles -->
-          <div class="row" style="display: inline-block;" >
+          <!-- <div class="row" style="display: inline-block;" >
           <div class="tile_count">
             <div class="col-md-2 col-sm-4  tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Users</span>
@@ -84,7 +84,7 @@
         </div>
           <!-- /top tiles -->
 
-          <div class="row">
+          <!-- <div class="row">
             
 
           </div>
@@ -482,10 +482,10 @@
 
               </div>
               <div class="row">
-
+ -->
 
                 <!-- Start to do list -->
-                <div class="col-md-6 col-sm-6 ">
+                <!-- <div class="col-md-6 col-sm-6 ">
                   <div class="x_panel">
                     <div class="x_title">
                       <h2>To Do List <small>Sample tasks</small></h2>
@@ -548,11 +548,11 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <!-- End to do list -->
                 
                 <!-- start of weather widget -->
-                <div class="col-md-6 col-sm-6 ">
+                <!-- <div class="col-md-6 col-sm-6 ">
                   <div class="x_panel">
                     <div class="x_title">
                       <h2>Daily active users <small>Sessions</small></h2>
@@ -655,7 +655,8 @@
                   </div>
 
                 </div>
-                <!-- end of weather widget -->
+                end of weather widget -->
+                <h1>Welcome to TA System</h1>
               </div>
             </div>
           </div>

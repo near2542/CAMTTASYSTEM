@@ -31,7 +31,7 @@ require_once('../../db/connect.php');
         <div class="profile_info">
           <span>Welcome,</span>
           <h2>
-            <?= $_SESSION['user'] ?>
+          <?= $_SESSION['name'] ?>
           </h2>
         </div>
       </div>
@@ -48,7 +48,7 @@ require_once('../../db/connect.php');
               <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                   <li><a href="./course.php">Course</a></li>
-                  <li><a href="./available_courses.php">Add </a></li>
+                  <li><a href="./available_courses.php">Available Courses</a></li>
                   <li><a href="./assign_courses.php">Assign Courses</a></li>
                   <li><a href="./approve_ta.php">Approve TA</a></li>
                   <li><a href="./approved_ta.php">Approved TA List</a></li>

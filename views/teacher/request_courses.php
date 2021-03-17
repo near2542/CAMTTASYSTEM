@@ -203,7 +203,7 @@ while($row = mysqli_fetch_assoc($day))
             <td><?=$data['hr_per_week']?></td>
             <td>
             <button class="btn btn-success" data-target="#edit<?=$data['m_course_id']?>" data-toggle="modal">Edit</button> 
-            <button class="btn btn-danger" data-target="#delete<?=$data['m_course_id']?>" data-toggle="modal">Delete</button>
+            <!-- <button class="btn btn-danger" data-target="#delete<?=$data['m_course_id']?>" data-toggle="modal">Delete</button> -->
             </td>
 
             <!--  Edit -->

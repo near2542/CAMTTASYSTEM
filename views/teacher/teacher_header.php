@@ -31,7 +31,7 @@ if(isset($_SESSION['error']))
         <div class="profile_info">
           <span>Welcome,</span>
           <h2>
-            <?= $_SESSION['user'] ?>
+          <?= $_SESSION['name'] ?>
           </h2>
         </div>
       </div>
@@ -52,7 +52,7 @@ if(isset($_SESSION['error']))
                       <li><a href="./request_courses.php">Request For Courses</a></li>
                       <li><a href="./request_TA.php">Request For TA</a></li>
                       <li><a href="./approve_ta.php">Approve TA</a></li>
-                      <li><a href="./approved_ta.php">Request For Courses</a></li>
+                      <li><a href="./approved_ta.php">Approved TA List</a></li>
                     </ul>
                   </li>
               
@@ -84,8 +84,7 @@ if(isset($_SESSION['error']))
           <li class="nav-item dropdown open" style="padding-left: 15px;">
             <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown"
               data-toggle="dropdown" aria-expanded="false">
-              <img src="images/img.jpg" alt="">
-              <?= $_SESSION['id'] ?>
+              <?= $_SESSION['name'] ?>
             </a>
             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
             

@@ -20,7 +20,7 @@ else {
     exit(0);
 }
 
-$query = sprintf("SELECT * FROM course WHERE course_id = %d",$conn->real_escape_string($id));
+$query = sprintf("SELECT * FROM course WHERE course_id = %d",$conn->real_escape_string($old));
 echo $query;
 $existCourses = $conn->query($query);
 var_dump($existCourses->num_rows);

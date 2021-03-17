@@ -85,8 +85,8 @@ if(!isset($_SESSION['role']))
                     <ul class="nav child_menu">
                       <li><a href="./teacher/request_courses.php">Request For Courses</a></li>
                       <li><a href="./teacher/request_TA.php">Request For TA</a></li>
-                      <li><a href="./teacher/approve_ta.php">Request For Courses</a></li>
-                      <li><a href="./teacher/approved_ta.php">Request For Courses</a></li>
+                      <li><a href="./teacher/approve_ta.php">Approve TA</a></li>
+                      <li><a href="./teacher/approved_ta.php">Approved TA List</a></li>
                     </ul>
                   </li>
               </div>
@@ -131,7 +131,7 @@ if(!isset($_SESSION['role']))
           <li class="nav-item dropdown open" style="padding-left: 15px;">
             <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown"
               data-toggle="dropdown" aria-expanded="false">
-               <?= $_SESSION['name'] ?>
+              <?= $_SESSION['name'] ?>
             </a>
             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
             

@@ -7,10 +7,9 @@ session_start();
 require_once '../../../db/connect.php';
 if($_SESSION['role'] == 3) header('location:../../index.php');
 
-if($_GET['id'] && $_GET['type'])
+if($_GET['id'] )
 {
     $registerid = $_GET['id'];
-    $usertype = $_GET['type'];
 }
 else
 {
@@ -23,7 +22,7 @@ $checkLimitQuery = "SELECT * from register r
 INNER JOIN matching_course m ON m.m_course_id = r.m_course_id
 INNER JOIN user_tbl u ON u.user_id = r.user_id 
 -- INNER JOIN ta_request t ON t.m_course_id = m.m_course_id
-WHERE m.m_course_id = (SELECT m_course_id from register WHERE register_id = '$registerid' ) and r_status = 2  AND user_type = '$usertype'";
+WHERE m.m_course_id = (SELECT m_course_id from register WHERE register_id = '$registerid' ) and r_status = 2  ";
 
 $result = $conn->query($checkLimitQuery);
 $total = 0;
@@ -37,9 +36,6 @@ if(!$result || mysqli_error($conn))
     $row = mysqli_fetch_row($limit);
     $total = $row[0];
     echo $total;
-
- 
-
 
 
 $approveQuery = sprintf("UPDATE register SET r_status = 2
@@ -70,8 +66,11 @@ if(!$result || mysqli_error($conn))
 
 $totalNow = mysqli_fetch_row($result);
 
-if($totalNow >= $total)
-{   $updateQuery = sprintf("UPDATE matching_course SET m_status = 0 
+
+if($totalNow[0]>= $total)
+{
+echo "it's true";
+   $updateQuery = sprintf("UPDATE matching_course SET m_status = 0 
                     WHERE m_course_id = (SELECT m_course_id from register WHERE register_id = '%d') ",$registerid);
     $update = $conn->query($updateQuery);
     if(!$update || mysqli_error($conn))

@@ -114,25 +114,38 @@ while($row = mysqli_fetch_assoc($major))
 
         <table class="table table-striped">
           <tr>
-            <th>Course ID</th>
+          <th>Course ID</th>
             <th>Course Name</th>
             <th>Major Name</th>
-            <th>Student Name</th>
+            <th>TA Name</th>
+            <th>Type</th>
+            <th>Teacher Name</th>
+            <th>Day</th>
+            <th>Time</th>
+            <th>Year</th>
+            <th>semester</th>
+            <th>Action</th>
           </tr>
           
-          <?php while($data=mysqli_fetch_assoc($talist))
+          <?php while($data=mysqli_fetch_array($talist))
           {
         ?>
 
         <!---------------- ---------------------------->
           <tr>
-            <td><?=$data['course_id']?></td>
+          <td><?=$data['course_id']?></td>
             <td><?=$data['course_name']?></td>
             <td><?=$data['major_name']?></td>
+            <td><?=$data[8]?> <?=$data[9]?></td>
+            <td><?=$data[17]== 3? 'internal': 'external' ?></td>
             <td><?=$data['f_name']?> <?=$data['l_name']?></td>
+            <td><?=$data['day']?> </td>
+            <td><?=$data['t_time']?> </td>
+            <td><?=$data['year']?> </td>
+            <td><?=$data['sem_number']?> </td>
             <td>
-            <button class="btn btn-success" data-target="#edit<?=$data['course_id']?>" data-toggle="modal">Approve</button> 
-            <button class="btn btn-danger" data-target="#delete<?=$data['course_id']?>" data-toggle="modal">Delete</button>
+            <button class="btn btn-success" data-target="#edit<?=$data['register_id']?>" data-toggle="modal">Approve</button> 
+            
             </td>
 
             <!--  Edit -->
@@ -145,21 +158,21 @@ while($row = mysqli_fetch_assoc($major))
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="./approve_ta/approve.php?old=<?=$data['course_id']?>" method="POST">
+      <form action="./approve_ta/approve.php?id=<?=$data['register_id']?>" method="POST">
       <div class="modal-body">
        
       <div class="form-floating mb-3">
       <label for="floatingInput">Course ID</label>
-        <input type="text" class="form-control" id="floatingInput" value="<?=$data['course_id']?>"  name="course_id" placeholder="Course ID">
+        <input type="text" class="form-control" id="floatingInput" value="<?=$data['course_id']?>"  disabled name="course_id" placeholder="Course ID">
     </div>
      <div class="form-floating mb-3">
        <label for="floatingInput">Course Name</label>
-         <input type="text" name="course_name" class="form-control" value="<?=$data['course_name']?>" id="floatingInput" placeholder="Course Name">
+         <input type="text" name="course_name" class="form-control" value="<?=$data['course_name']?>" disabled id="floatingInput" placeholder="Course Name">
 
 
      </div> 
      <label for="floatingInput">Major: </label>
-     <select class="form-control" name="major_id" placeholder="Select The Major">
+     <select class="form-control" name="major_id" value="<?=$row['major']?>" disabled placeholder="Select The Major">
      <?= $option ?>
             </select>
            

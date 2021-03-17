@@ -8,7 +8,7 @@
         $conn->real_escape_string($_POST['password'])
             );
     $row = $conn->query($query);
-    $result = $row->fetch_assoc();
+    $result = $row->fetch_assoc();  
     $conn->close();
          if(!is_null($result)) 
         {

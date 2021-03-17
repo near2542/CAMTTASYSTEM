@@ -6,7 +6,7 @@ if($mode !== "production")
 	$username = 'root';
 	$password = '';
 	$port = null;
-	$dbname = 'tasys';
+	$dbname = 'tasys2';
 }
 else {
 	$host = 'mysql-for-hosting';
